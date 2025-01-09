@@ -6,16 +6,13 @@ use App\Enums\ErrorMessagesEnum;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class EntityNotFoundException extends Exception
+class EntityNotFoundException extends Exception implements CustomException
 {
-    private int $responseCode;
-
     public function __construct(
-        string          $entityName = null,
-        int             $responseCode = Response::HTTP_NOT_FOUND
+        string                  $entityName = null,
+        private readonly int    $responseCode = Response::HTTP_NOT_FOUND
     )
     {
-        $this->responseCode = $responseCode;
         if (is_null($entityName)) {
             $this->message = ErrorMessagesEnum::ENTITY_NOT_FOUND_EXCEPTION_DEFAULT_MESSAGE;
         }
