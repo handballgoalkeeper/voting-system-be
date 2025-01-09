@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Builders\ErrorResponseBuilder;
-use App\Enums\ErrorMessagesEnum;
 use App\Exceptions\EntityNotFoundException;
+use App\Facade\ResponseFacade;
+use App\Http\Requests\CountryCreateRequest;
 use App\Services\CountryService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 
 class CountryController extends Controller
 {
@@ -26,18 +23,10 @@ class CountryController extends Controller
             $countries = $this->countryService->findAll();
         }
         catch (EntityNotFoundException $exception) {
-            return (new ErrorResponseBuilder(
-                responseCode: $exception->getResponseCode()
-            ))
-            ->withMessage($exception->getMessage())
-            ->build();
+            return ResponseFacade::errorResponse(exception: $exception);
         }
-        catch (Exception) {
-            return (new ErrorResponseBuilder(
-                responseCode: Response::HTTP_INTERNAL_SERVER_ERROR,
-            ))
-            ->withMessage(message: ErrorMessagesEnum::UNHANDLED_EXCEPTION->value)
-            ->build();
+        catch (Exception $e) {
+            return ResponseFacade::unhandledExceptionResponse(exception: $e);
         }
 
         return response()->json($countries);
