@@ -3,11 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Dtos\CountryDto;
-use App\Mappers\CountryMapper;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Request;
 
-class CountryCreateRequest extends FormRequest
+class CountryCreateRequest extends JSONRequest
 {
     public function authorize(): bool
     {
