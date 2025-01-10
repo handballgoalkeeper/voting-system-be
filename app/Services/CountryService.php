@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Dtos\CountryDto;
+use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
 use App\Mappers\CountryMapper;
 use App\Repositories\CountryRepository;
@@ -27,6 +28,15 @@ readonly class CountryService
             throw new EntityNotFoundException(entityName: 'Country');
         }
 
-        return CountryMapper::models_to_dtos($countries);
+        return CountryMapper::modelsToDtos($countries);
+    }
+
+    /**
+     * @throws DBOperationException
+     */
+    public function create(CountryDto $data): CountryDto
+    {
+        $newCountry = $this->countryRepository->create(CountryMapper::dtoToModel($data));
+        return CountryMapper::modelToDto($newCountry);
     }
 }

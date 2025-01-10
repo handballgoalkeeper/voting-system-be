@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CountryMapper
 {
-    public static function model_to_dto(CountryModel $country): CountryDTO
+    public static function modelToDto(CountryModel $country): CountryDTO
     {
         return new CountryDTO(
             name: $country->getAttribute("name"),
@@ -20,14 +20,22 @@ class CountryMapper
     /**
      * @return array<CountryDto>
      */
-    public static function models_to_dtos(Collection $countries): array
+    public static function modelsToDtos(Collection $countries): array
     {
         $output = [];
 
         foreach ($countries as $country) {
-            $output[] = self::model_to_dto($country);
+            $output[] = self::modelToDto($country);
         }
 
         return $output;
+    }
+
+    public static function dtoToModel(CountryDTO $countryDTO): CountryModel
+    {
+        return new CountryModel([
+            'name' => $countryDTO->getName(),
+            'total_voters' => $countryDTO->getTotalVoters()
+        ]);
     }
 }
