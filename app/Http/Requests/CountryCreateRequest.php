@@ -7,7 +7,7 @@ use App\Mappers\CountryMapper;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Request;
 
-class CountryCreateRequest extends Request
+class CountryCreateRequest extends FormRequest
 {
     public function authorize(): bool
     {
