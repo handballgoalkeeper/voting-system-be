@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Dtos\CountryDTO;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CountryCreateRequest extends JSONRequest
+class UpdateCountryRequest extends JSONRequest
 {
     public function authorize(): bool
     {
@@ -15,8 +14,9 @@ class CountryCreateRequest extends JSONRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255|unique:countries,name',
-            'total_voters' => 'required|integer|min:1',
+            "id" => "required|integer|exists:countries,id",
+            "name" => "required|string|max:255",
+            "total_voters" => "required|integer|min:1",
         ];
     }
 
@@ -26,6 +26,7 @@ class CountryCreateRequest extends JSONRequest
         return new CountryDTO(
             name: $data['name'],
             totalVoters: $data['total_voters'],
+            id: $data["id"],
         );
     }
 }

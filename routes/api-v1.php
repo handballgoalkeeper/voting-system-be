@@ -12,7 +12,8 @@ Route::prefix(API_VERSION)
             ->name('countries.')
             ->controller(CountryController::class)
             ->group(function () {
-                Route::post('/', 'create')->name('create');
                 Route::get('/', 'findAll')->name('findAll');
+                Route::post('/', 'create')->name('create');
+                Route::put('/', 'update')->name('update');
             });
     });

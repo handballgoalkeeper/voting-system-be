@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
+use App\Exceptions\ValueNotUniqueException;
 use App\Facade\ResponseFacade;
 use App\Http\Requests\CountryCreateRequest;
+use App\Http\Requests\UpdateCountryRequest;
+use App\Mappers\CountryMapper;
+use App\Models\CountryModel;
 use App\Services\CountryService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -48,5 +52,22 @@ class CountryController extends Controller
         }
 
         return response()->json($newCountry);
+    }
+
+    public function update(UpdateCountryRequest $request): JsonResponse
+    {
+        $updatedCountry = $request->validateToDto();
+
+        try {
+            $updatedCountry = $this->countryService->update(updatedData: $updatedCountry);
+        }
+        catch (DBOperationException | ValueNotUniqueException $exception) {
+            return ResponseFacade::errorResponse(exception: $exception);
+        }
+        catch (Exception $e) {
+            return ResponseFacade::unhandledExceptionResponse(exception: $e);
+        }
+
+        return response()->json($updatedCountry);
     }
 }

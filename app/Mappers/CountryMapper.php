@@ -2,7 +2,7 @@
 
 namespace App\Mappers;
 
-use App\Dtos\CountryDto;
+use App\Dtos\CountryDTO;
 use App\Models\CountryModel;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -13,12 +13,13 @@ class CountryMapper
         return new CountryDTO(
             name: $country->getAttribute("name"),
             totalVoters: $country->getAttribute("total_voters"),
+            id: $country->getAttribute("id"),
         );
     }
 
 
     /**
-     * @return array<CountryDto>
+     * @return array<CountryDTO>
      */
     public static function modelsToDtos(Collection $countries): array
     {

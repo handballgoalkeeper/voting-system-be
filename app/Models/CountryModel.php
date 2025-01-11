@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static firstWhere(string $string, int $id)
+ * @method static findOrFail(int $id)
+ */
 class CountryModel extends Model
 {
     const TABLE_NAME = "countries";
