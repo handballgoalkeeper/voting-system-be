@@ -8,8 +8,6 @@ use App\Exceptions\ValueNotUniqueException;
 use App\Facade\ResponseFacade;
 use App\Http\Requests\CountryCreateRequest;
 use App\Http\Requests\UpdateCountryRequest;
-use App\Mappers\CountryMapper;
-use App\Models\CountryModel;
 use App\Services\CountryService;
 use Exception;
 use Illuminate\Http\JsonResponse;
