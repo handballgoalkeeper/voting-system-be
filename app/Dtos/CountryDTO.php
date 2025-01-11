@@ -4,11 +4,12 @@ namespace App\Dtos;
 
 use JsonSerializable;
 
-class CountryDto implements JsonSerializable
+class CountryDTO implements JsonSerializable
 {
     public function __construct(
         private string $name,
         private int $totalVoters,
+        private ?int $id = null
     )
     {
     }
@@ -31,6 +32,16 @@ class CountryDto implements JsonSerializable
     public function setTotalVoters(int $totalVoters): void
     {
         $this->totalVoters = $totalVoters;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function jsonSerialize(): array
