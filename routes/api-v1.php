@@ -14,6 +14,11 @@ Route::prefix(API_VERSION)
             ->controller(CountryController::class)
             ->group(function () {
                 Route::get('/', 'findAll')->name('find_all');
+                Route::get('/{countryId}', 'findOneById')
+                    ->middleware([
+                        'ValidateParameter:countryId,[1-9][0-9]*',
+                    ])
+                    ->name('find_one_by_id');
                 Route::post('/', 'create')->name('create');
                 Route::put('/', 'update')->name('update');
             });
