@@ -3,6 +3,7 @@
 namespace App\Facade;
 
 use App\Builders\ErrorResponseBuilder;
+use App\Builders\ValidationErrorResponseBuilder;
 use App\Enums\ErrorMessagesEnum;
 use App\Exceptions\CustomException;
 use Exception;
@@ -27,6 +28,18 @@ class ResponseFacade
             responseCode: $exception->getResponseCode()
         ))
             ->withMessage($exception->getMessage())
+            ->build();
+    }
+
+    public static function routeParameterValidationErrorResponse(string $parameterName, string $message): JsonResponse
+    {
+        return (new ValidationErrorResponseBuilder(
+            responseCode: Response::HTTP_BAD_REQUEST
+        ))
+            ->withMessage(
+                parameterName: $parameterName,
+                message: $message
+            )
             ->build();
     }
 }
