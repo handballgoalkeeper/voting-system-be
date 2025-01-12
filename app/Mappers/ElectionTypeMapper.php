@@ -6,6 +6,7 @@ use App\Dtos\ElectionTypeDTO;
 use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
 use App\Http\Requests\ElectionTypeCreateRequest;
+use App\Http\Requests\ElectionTypeUpdateRequest;
 use App\Http\Requests\JSONRequest;
 use App\Models\ElectionTypeModel;
 use Illuminate\Database\Eloquent\Collection;
@@ -77,6 +78,19 @@ class ElectionTypeMapper
             $dto = new ElectionTypeDTO(
                 name: $data['name'],
                 countryId: $data['country_id']
+            );
+
+            if (isset($data['description'])) {
+                $dto->setDescription($data['description']);
+            }
+
+            return $dto;
+        }
+        elseif ($requestName === ElectionTypeUpdateRequest::class) {
+            $dto = new ElectionTypeDTO(
+                name: $data['name'],
+                countryId: $data['country_id'],
+                id: $data['id']
             );
 
             if (isset($data['description'])) {

@@ -34,5 +34,6 @@ Route::prefix(API_VERSION)
                     ])
                     ->name('find_one_by_id');
                 Route::post('/', 'create')->name('create');
+                Route::put('/', 'update')->name('update');
             });
     });

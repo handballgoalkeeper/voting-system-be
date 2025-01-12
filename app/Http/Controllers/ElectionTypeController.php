@@ -7,6 +7,7 @@ use App\Exceptions\EntityNotFoundException;
 use App\Exceptions\ValueNotUniqueException;
 use App\Facade\ResponseFacade;
 use App\Http\Requests\ElectionTypeCreateRequest;
+use App\Http\Requests\ElectionTypeUpdateRequest;
 use App\Services\ElectionTypeService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -61,5 +62,19 @@ class ElectionTypeController extends Controller
         }
 
         return response()->json($newElectionType);
+    }
+
+    public function update(ElectionTypeUpdateRequest $request): JsonResponse
+    {
+        try {
+            $updatedData = $request->validateToDto();
+            $updatedElectionType = $this->electionTypeService->update(updatedData: $updatedData);
+        } catch (DBOperationException | EntityNotFoundException | ValueNotUniqueException $e) {
+            return ResponseFacade::errorResponse(exception: $e);
+        } catch (Exception $e) {
+            return ResponseFacade::unhandledExceptionResponse(exception: $e);
+        }
+
+        return response()->json($updatedElectionType);
     }
 }

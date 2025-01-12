@@ -55,4 +55,32 @@ class ElectionTypeService
         $newElectionType = $this->electionTypeRepository->create(ElectionTypeMapper::dtoToModel($data));
         return ElectionTypeMapper::modelToDto($newElectionType);
     }
+
+    /**
+     * @throws DBOperationException
+     * @throws EntityNotFoundException
+     * @throws ValueNotUniqueException
+     */
+    public function update(ElectionTypeDTO $updatedData): ElectionTypeDTO
+    {
+        $currentState = $this->electionTypeRepository->findOneById($updatedData->getId());
+
+        if (!$this->electionTypeRepository->isValueUniqueForCountry(column: 'name', value: $updatedData->getName(), country: $updatedData->getCountry(), excludedModel: $currentState)) {
+            throw new ValueNotUniqueException();
+        }
+
+        $currentState->setAttribute('name', $updatedData->getName());
+        $currentState->setAttribute('description', $updatedData->getDescription());
+        $currentState->setAttribute('country_id', $updatedData->getCountry()->getId());
+
+        if ($currentState->isDirty())
+        {
+            $currentState = $this->electionTypeRepository->save(model: $currentState);
+        }
+
+        return ElectionTypeMapper::modelToDto($currentState);
+
+
+
+    }
 }

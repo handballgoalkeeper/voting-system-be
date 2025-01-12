@@ -87,4 +87,19 @@ class ElectionTypeRepository
             throw new DBOperationException(message: "Something went wrong while checking uniqueness of values provided.");
         }
     }
+
+    /**
+     * @throws DBOperationException
+     */
+    public function save(ElectionTypeModel $model): ElectionTypeModel
+    {
+        try {
+            $model->save();
+        }
+        catch (Exception $e) {
+            throw new DBOperationException(message: 'Something went wrong while saving Election type.');
+        }
+
+        return $model;
+    }
 }
