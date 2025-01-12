@@ -47,6 +47,7 @@ class CountryDTO implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'totalVoters' => $this->totalVoters,
         ];
