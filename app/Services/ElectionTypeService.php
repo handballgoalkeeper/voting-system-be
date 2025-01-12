@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Dtos\ElectionTypeDTO;
+use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
 use App\Mappers\ElectionTypeMapper;
 use App\Repositories\ElectionTypeRepository;
@@ -16,8 +18,9 @@ class ElectionTypeService
 
     /**
      * @throws EntityNotFoundException
+     * @return array<ElectionTypeDTO>
      */
-    public function findAll()
+    public function findAll(): array
     {
         $electionTypes = $this->electionTypeRepository->findAll();
 
@@ -26,5 +29,14 @@ class ElectionTypeService
         }
 
         return ElectionTypeMapper::models_to_dtos($electionTypes);
+    }
+
+    /**
+     * @throws DBOperationException
+     * @throws EntityNotFoundException
+     */
+    public function findOneById(int $electionTypeId): ElectionTypeDTO
+    {
+        return ElectionTypeMapper::model_to_dto($this->electionTypeRepository->findOneById($electionTypeId));
     }
 }

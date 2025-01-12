@@ -28,5 +28,10 @@ Route::prefix(API_VERSION)
             ->controller(ElectionTypeController::class)
             ->group(function () {
                 Route::get('/', 'findAll')->name('find_all');
+                Route::get('/{electionTypeId}', 'findOneById')
+                    ->middleware([
+                        'ValidateParameter:electionTypeId,[1-9][0-9]*',
+                    ])
+                    ->name('find_one_by_id');
             });
     });

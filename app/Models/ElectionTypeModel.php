@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @method static firstWhere(string $string, int $id)
+ */
 class ElectionTypeModel extends Model
 {
     const TABLE = 'election_types';

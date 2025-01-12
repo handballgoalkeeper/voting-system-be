@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
 use App\Facade\ResponseFacade;
 use App\Services\ElectionTypeService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ElectionTypeController extends Controller
 {
@@ -30,5 +30,20 @@ class ElectionTypeController extends Controller
         }
 
         return response()->json($electionTypes);
+    }
+
+    public function findOneById(int $electionTypeId): JsonResponse
+    {
+        try {
+            $electionType = $this->electionTypeService->findOneById($electionTypeId);
+        }
+        catch (EntityNotFoundException | DBOperationException $e) {
+            return ResponseFacade::errorResponse(exception: $e);
+        }
+        catch (Exception $e) {
+            return ResponseFacade::unhandledExceptionResponse(exception: $e);
+        }
+
+        return response()->json($electionType);
     }
 }
