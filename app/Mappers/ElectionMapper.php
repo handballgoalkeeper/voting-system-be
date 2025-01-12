@@ -5,6 +5,7 @@ namespace App\Mappers;
 use App\Dtos\ElectionDTO;
 use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
+use App\Http\Requests\ElectionCreateRequest;
 use App\Models\ElectionModel;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -40,4 +41,30 @@ class ElectionMapper
 
         return $output;
     }
+
+    /**
+     * @throws DBOperationException
+     * @throws EntityNotFoundException
+     */
+    public static function requestToDto(array $data, string $requestName): ?ElectionDTO
+    {
+        if ($requestName === ElectionCreateRequest::class) {
+            return new ElectionDTO(
+                countryId: $data["country_id"],
+                electionTypeId: $data["election_type_id"],
+                isPublished: false
+            );
+        }
+        return null;
+    }
+
+    public static function dtoToModel(ElectionDTO $dto): ElectionModel
+    {
+        return new ElectionModel([
+            "country_id" => $dto->getCountry()->getId(),
+            "election_type_id" => $dto->getElectionType()->getId(),
+            "is_published" => $dto->isPublished()
+        ]);
+    }
+
 }

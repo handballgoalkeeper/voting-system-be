@@ -43,5 +43,6 @@ Route::prefix(API_VERSION)
             ->controller(ElectionController::class)
             ->group(function () {
                 Route::get('/', 'findAll')->name('find_all');
+                Route::post('/', 'create')->name('create');
             });
     });

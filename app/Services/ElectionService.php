@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Dtos\ElectionDTO;
 use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
+use App\Exceptions\FailedConstraintException;
 use App\Facade\ResponseFacade;
 use App\Mappers\ElectionMapper;
 use App\Repositories\ElectionRepository;
@@ -31,5 +33,19 @@ readonly class ElectionService
         }
 
         return ElectionMapper::modelsToDtos($elections);
+    }
+
+    /**
+     * @throws DBOperationException
+     * @throws EntityNotFoundException
+     * @throws FailedConstraintException
+     */
+    public function create(ElectionDTO $requestData): ElectionDTO
+    {
+        if ($requestData->getElectionType()->getCountry()->getId() !== $requestData->getCountry()->getId()) {
+            throw new FailedConstraintException('Provided election type is not of provided country.');
+        }
+
+        return ElectionMapper::modelToDto($this->electionRepository->create(ElectionMapper::dtoToModel($requestData)));
     }
 }
