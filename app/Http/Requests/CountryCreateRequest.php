@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Dtos\CountryDTO;
+use App\Mappers\CountryMapper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CountryCreateRequest extends JSONRequest
@@ -23,9 +24,6 @@ class CountryCreateRequest extends JSONRequest
     public function validateToDto(): CountryDTO
     {
         $data = $this->validated();
-        return new CountryDTO(
-            name: $data['name'],
-            totalVoters: $data['total_voters'],
-        );
+        return CountryMapper::requestToDto(data: $data, requestName: self::class);
     }
 }

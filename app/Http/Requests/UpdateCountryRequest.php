@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Dtos\CountryDTO;
+use App\Mappers\CountryMapper;
 
 class UpdateCountryRequest extends JSONRequest
 {
@@ -23,10 +24,6 @@ class UpdateCountryRequest extends JSONRequest
     public function validateToDto(): CountryDTO
     {
         $data = $this->validated();
-        return new CountryDTO(
-            name: $data['name'],
-            totalVoters: $data['total_voters'],
-            id: $data["id"],
-        );
+        return CountryMapper::requestToDto(data: $data, requestName: self::class);
     }
 }

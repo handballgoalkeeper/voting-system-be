@@ -3,6 +3,7 @@
 namespace App\Dtos;
 
 use App\Exceptions\DBOperationException;
+use App\Exceptions\EntityNotFoundException;
 use App\Services\CountryService;
 use JsonSerializable;
 
@@ -10,11 +11,16 @@ class ElectionTypeDTO implements JsonSerializable
 {
     private int $countryId;
     private CountryDTO $country;
+
+    /**
+     * @throws DBOperationException
+     * @throws EntityNotFoundException
+     */
     public function __construct(
-        private int $id,
         private string $name,
-        private string $description,
         int $countryId,
+        private ?int $id = null,
+        private ?string $description = null,
     )
     {
         $this->setCountryId($countryId);
@@ -30,7 +36,7 @@ class ElectionTypeDTO implements JsonSerializable
         $this->name = $name;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -47,6 +53,7 @@ class ElectionTypeDTO implements JsonSerializable
 
     /**
      * @throws DBOperationException
+     * @throws EntityNotFoundException
      */
     public function setCountryId(int $country_id): void
     {
@@ -65,7 +72,7 @@ class ElectionTypeDTO implements JsonSerializable
         $this->country = $country;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

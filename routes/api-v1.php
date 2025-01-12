@@ -33,5 +33,6 @@ Route::prefix(API_VERSION)
                         'ValidateParameter:electionTypeId,[1-9][0-9]*',
                     ])
                     ->name('find_one_by_id');
+                Route::post('/', 'create')->name('create');
             });
     });
