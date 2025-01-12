@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Exceptions\DBOperationException;
+use App\Exceptions\EntityNotFoundException;
 use App\Models\CountryModel;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,14 +33,19 @@ class CountryRepository
 
     /**
      * @throws DBOperationException
+     * @throws EntityNotFoundException
      */
     public function findOneById(int $id): CountryModel
     {
         try {
-            $country = CountryModel::findOrFail($id);
+            $country = CountryModel::firstWhere('id', $id);
         }
         catch (Exception $e) {
             throw new DBOperationException('Something went wrong while trying to retrieve country with provided id.');
+        }
+
+        if (is_null($country)) {
+            throw new EntityNotFoundException();
         }
 
         return $country;
@@ -66,7 +72,7 @@ class CountryRepository
     public function isValueUnique(mixed $value, string $columnName, CountryModel $excludedModel): bool
     {
         try {
-            $count = DB::table(CountryModel::TABLE_NAME)
+            $count = DB::table(CountryModel::TABLE)
                 ->select([
                     'id'
                 ])

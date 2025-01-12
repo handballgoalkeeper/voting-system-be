@@ -59,7 +59,7 @@ class CountryController extends Controller
         try {
             $updatedCountry = $this->countryService->update(updatedData: $updatedCountry);
         }
-        catch (DBOperationException | ValueNotUniqueException $exception) {
+        catch (DBOperationException | ValueNotUniqueException | EntityNotFoundException $exception) {
             return ResponseFacade::errorResponse(exception: $exception);
         }
         catch (Exception $e) {
@@ -67,5 +67,20 @@ class CountryController extends Controller
         }
 
         return response()->json($updatedCountry);
+    }
+
+    public function findOneById(int $countryId): JsonResponse
+    {
+        try {
+            $country = $this->countryService->findOneById($countryId);
+        }
+        catch (EntityNotFoundException $exception) {
+            return ResponseFacade::errorResponse(exception: $exception);
+        }
+        catch (Exception $e) {
+            return ResponseFacade::unhandledExceptionResponse(exception: $e);
+        }
+
+        return response()->json($country);
     }
 }

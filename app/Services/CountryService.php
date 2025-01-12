@@ -44,6 +44,7 @@ readonly class CountryService
     /**
      * @throws DBOperationException
      * @throws ValueNotUniqueException
+     * @throws EntityNotFoundException
      */
     public function update(CountryDTO $updatedData): CountryDTO
     {
@@ -66,6 +67,7 @@ readonly class CountryService
 
     /**
      * @throws DBOperationException
+     * @throws EntityNotFoundException
      */
     public function findOneById(int $id): CountryDTO
     {
