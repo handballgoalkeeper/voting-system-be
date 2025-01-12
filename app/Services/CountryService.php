@@ -63,4 +63,12 @@ readonly class CountryService
 
         return CountryMapper::modelToDto($currentState);
     }
+
+    /**
+     * @throws DBOperationException
+     */
+    public function findOneById(int $id): CountryDTO
+    {
+        return CountryMapper::modelToDto($this->countryRepository->findOneById($id));
+    }
 }

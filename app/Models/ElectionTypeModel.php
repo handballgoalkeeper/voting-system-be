@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ElectionTypeModel extends Model
 {
@@ -13,4 +14,9 @@ class ElectionTypeModel extends Model
         'description',
         'country_id'
     ];
+
+    public function country(): HasOne
+    {
+        return $this->hasOne(related: CountryModel::class, foreignKey: 'id', localKey: 'country_id');
+    }
 }
