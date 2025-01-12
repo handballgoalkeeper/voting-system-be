@@ -14,7 +14,7 @@ class EntityNotFoundException extends Exception implements CustomException
     )
     {
         if (is_null($entityName)) {
-            $this->message = ErrorMessagesEnum::ENTITY_NOT_FOUND_EXCEPTION_DEFAULT_MESSAGE;
+            $this->message = ErrorMessagesEnum::ENTITY_NOT_FOUND_EXCEPTION_DEFAULT_MESSAGE->value;
         }
         else {
             $this->message = "The requested entity '{$entityName}' was not found.";
