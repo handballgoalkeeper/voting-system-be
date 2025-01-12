@@ -55,9 +55,9 @@ class ElectionTypeDTO implements JsonSerializable
      * @throws DBOperationException
      * @throws EntityNotFoundException
      */
-    public function setCountryId(int $country_id): void
+    public function setCountryId(int $countryId): void
     {
-        $this->countryId = $country_id;
+        $this->countryId = $countryId;
         $this->country = app(CountryService::class)->findOneById($this->countryId);
     }
 

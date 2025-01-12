@@ -9,7 +9,7 @@ use App\Exceptions\ValueNotUniqueException;
 use App\Mappers\ElectionTypeMapper;
 use App\Repositories\ElectionTypeRepository;
 
-class ElectionTypeService
+readonly class ElectionTypeService
 {
     public function __construct(
         private readonly ElectionTypeRepository $electionTypeRepository

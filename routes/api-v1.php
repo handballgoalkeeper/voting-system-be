@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\ElectionTypeController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,5 +36,12 @@ Route::prefix(API_VERSION)
                     ->name('find_one_by_id');
                 Route::post('/', 'create')->name('create');
                 Route::put('/', 'update')->name('update');
+            });
+
+        Route::prefix('/elections')
+            ->name('elections.')
+            ->controller(ElectionController::class)
+            ->group(function () {
+                Route::get('/', 'findAll')->name('find_all');
             });
     });
