@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(table: CountryModel::TABLE_NAME, callback: function (Blueprint $table) {
+        Schema::create(table: CountryModel::TABLE, callback: function (Blueprint $table) {
             $table->id();
             $table->string(column: 'name', length: 255)->unique();
             $table->unsignedBigInteger(column: 'total_voters');
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(table: CountryModel::TABLE_NAME);
+        Schema::dropIfExists(table: CountryModel::TABLE);
     }
 };

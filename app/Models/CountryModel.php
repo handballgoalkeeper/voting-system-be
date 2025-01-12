@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CountryModel extends Model
 {
-    const TABLE_NAME = "countries";
+    const TABLE = "countries";
 
-    protected $table = self::TABLE_NAME;
+    protected $table = self::TABLE;
 
     protected $fillable = [
         "name",
