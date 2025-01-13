@@ -23,7 +23,7 @@ readonly class ElectionStageService
      */
     public function findAllByElectionId(int $electionId): array
     {
-        if (!app(ElectionService::class)->existsById($electionId)) {
+        if (!app(ElectionService::class)->existsWithId($electionId)) {
             throw new FailedConstraintException('Election with provided id does not exist.');
         }
 

@@ -61,10 +61,10 @@ readonly class ElectionService
     /**
      * @throws DBOperationException
      */
-    public function existsById(int $electionId): bool
+    public function existsWithId(int $electionId): bool
     {
         try {
-            $election = $this->electionRepository->findOneById($electionId);
+            $this->electionRepository->findOneById($electionId);
         } catch (EntityNotFoundException $e) {
             return false;
         }
