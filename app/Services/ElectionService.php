@@ -48,4 +48,27 @@ readonly class ElectionService
 
         return ElectionMapper::modelToDto($this->electionRepository->create(ElectionMapper::dtoToModel($requestData)));
     }
+
+    /**
+     * @throws DBOperationException
+     * @throws EntityNotFoundException
+     */
+    public function findOneById(int $electionId): ElectionDTO
+    {
+        return ElectionMapper::modelToDto($this->electionRepository->findOneById($electionId));
+    }
+
+    /**
+     * @throws DBOperationException
+     */
+    public function existsById(int $electionId): bool
+    {
+        try {
+            $election = $this->electionRepository->findOneById($electionId);
+        } catch (EntityNotFoundException $e) {
+            return false;
+        }
+
+        return true;
+    }
 }

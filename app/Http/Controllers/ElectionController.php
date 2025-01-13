@@ -8,6 +8,7 @@ use App\Exceptions\FailedConstraintException;
 use App\Facade\ResponseFacade;
 use App\Http\Requests\ElectionCreateRequest;
 use App\Services\ElectionService;
+use App\Services\ElectionStageService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
@@ -46,5 +47,20 @@ class ElectionController extends Controller
         }
 
         return response()->json($newElection);
+    }
+
+    public function findAllStages(int $electionId, ElectionStageService $electionStageService): JsonResponse
+    {
+        try {
+            $electionStages = $electionStageService->findAllByElectionId($electionId);
+        }
+        catch (EntityNotFoundException | DBOperationException | FailedConstraintException $e) {
+            return ResponseFacade::errorResponse(exception: $e);
+        }
+        catch (Exception $e) {
+            return ResponseFacade::unhandledExceptionResponse(exception: $e);
+        }
+
+        return response()->json($electionStages);
     }
 }

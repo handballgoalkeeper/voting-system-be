@@ -29,7 +29,7 @@ class ElectionTypeRepository
             $electionType = ElectionTypeModel::firstWhere('id', $id);
         }
         catch (Exception $e) {
-            throw new DBOperationException('Something went wrong while trying to retrieve election type with provided id.');
+                throw new DBOperationException('Something went wrong while trying to retrieve election type with provided id.');
         }
 
         if (is_null($electionType)) {

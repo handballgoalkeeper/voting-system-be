@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static firsWhere(string $string, int $id)
+ * @method static firstWhere(string $string, int $id)
+ */
 class ElectionModel extends Model
 {
     const TABLE = 'elections';

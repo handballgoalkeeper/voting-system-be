@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Repositories\CountryRepository;
 use App\Repositories\ElectionRepository;
+use App\Repositories\ElectionStageRepository;
 use App\Repositories\ElectionTypeRepository;
 use App\Services\CountryService;
 use App\Services\ElectionService;
+use App\Services\ElectionStageService;
 use App\Services\ElectionTypeService;
 use Illuminate\Support\ServiceProvider;
 
@@ -41,6 +43,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(abstract: ElectionService::class, concrete: function () {
             return new ElectionService(
                 electionRepository: $this->app->make(abstract: ElectionRepository::class)
+            );
+        });
+
+        $this->app->singleton(abstract: ElectionStageRepository::class, concrete: function () {
+            return new ElectionStageRepository();
+        });
+
+        $this->app->singleton(abstract: ElectionStageService::class, concrete: function () {
+            return new ElectionStageService(
+                electionStageRepository: $this->app->make(abstract: ElectionStageRepository::class)
             );
         });
     }

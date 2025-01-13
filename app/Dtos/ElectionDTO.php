@@ -25,7 +25,8 @@ class ElectionDTO implements JsonSerializable
         int $electionTypeId,
         private bool $isPublished,
         private ?Carbon $published_at = null,
-        private ?int $id = null
+        private ?int $id = null,
+        private ?array $stages = null,
     )
     {
         $this->setCountryId($countryId);
@@ -113,7 +114,23 @@ class ElectionDTO implements JsonSerializable
         $this->isPublished = $isPublished;
     }
 
+    /**
+     * @return array<ElectionStageDTO>|null
+     */
+    public function getStages(): ?array
+    {
+        return $this->stages;
+    }
 
+
+    /**
+     * @param array<ElectionStageDTO>|null $stages
+     * @return void
+     */
+    public function setStages(?array $stages): void
+    {
+        $this->stages = $stages;
+    }
 
     public function jsonSerialize(): array
     {

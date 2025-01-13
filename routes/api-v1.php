@@ -44,5 +44,12 @@ Route::prefix(API_VERSION)
             ->group(function () {
                 Route::get('/', 'findAll')->name('find_all');
                 Route::post('/', 'create')->name('create');
+                Route::get('/{electionId}/stages', 'findAllStages')
+                    ->middleware([
+                        'ValidateParameter:electionId,[1-9][0-9]*',
+                    ])
+                    ->name('find_all_stages');
             });
+
+//        Route::prefix()
     });
