@@ -52,7 +52,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(abstract: ElectionStageService::class, concrete: function () {
             return new ElectionStageService(
-                electionStageRepository: $this->app->make(abstract: ElectionStageRepository::class)
+                electionStageRepository: $this->app->make(abstract: ElectionStageRepository::class),
+                electionTypeService: $this->app->make(abstract: ElectionTypeService::class)
             );
         });
     }

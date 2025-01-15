@@ -19,12 +19,24 @@ class ElectionTypeDTO implements JsonSerializable
     public function __construct(
         private string $name,
         int $countryId,
+        private int $requiredStagesCount,
         private ?int $id = null,
         private ?string $description = null,
     )
     {
         $this->setCountryId($countryId);
     }
+
+    public function getRequiredStagesCount(): int
+    {
+        return $this->requiredStagesCount;
+    }
+
+    public function setRequiredStagesCount(int $requiredStagesCount): void
+    {
+        $this->requiredStagesCount = $requiredStagesCount;
+    }
+
 
     public function getName(): string
     {
@@ -88,6 +100,7 @@ class ElectionTypeDTO implements JsonSerializable
             'id' => $this->getId(),
             'name' => $this->getName(),
             'description' => $this->getDescription(),
+            'required_stages_count' => $this->getRequiredStagesCount(),
             'country' => $this->getCountry(),
         ];
     }

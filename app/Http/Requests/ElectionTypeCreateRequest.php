@@ -19,7 +19,8 @@ class ElectionTypeCreateRequest extends JSONRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'string|max:255',
-            'country_id' => 'required|integer|exists:countries,id'
+            'country_id' => 'required|integer|exists:countries,id',
+            'required_stages_count' => 'required|integer|min:1',
         ];
     }
 

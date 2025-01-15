@@ -13,9 +13,9 @@ return new class extends Migration
         Schema::create(table: ElectionStageModel::TABLE, callback: function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger(column: 'election_id');
-            $table->float(column: 'census')->nullable();
-            $table->float(column: 'coalition_census')->nullable();
-            $table->float(column: 'stage_instant_win_threshold')->nullable();
+            $table->unsignedSmallInteger(column: 'census')->nullable();
+            $table->unsignedSmallInteger(column: 'coalition_census')->nullable();
+            $table->unsignedSmallInteger(column: 'stage_instant_win_threshold')->nullable();
             $table->boolean(column: 'is_final')->default(false);
             $table->timestamp(column: 'starts_at');
             $table->timestamp(column: 'ends_at');

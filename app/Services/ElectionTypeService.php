@@ -79,8 +79,10 @@ readonly class ElectionTypeService
         }
 
         return ElectionTypeMapper::modelToDto($currentState);
+    }
 
-
+    public function find()
+    {
 
     }
 }

@@ -15,7 +15,8 @@ class ElectionTypeModel extends Model
     protected $fillable = [
         'name',
         'description',
-        'country_id'
+        'country_id',
+        'required_stages_count'
     ];
 
     public function country(): HasOne

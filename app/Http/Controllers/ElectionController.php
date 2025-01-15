@@ -6,7 +6,9 @@ use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
 use App\Exceptions\FailedConstraintException;
 use App\Facade\ResponseFacade;
+use App\Http\Requests\AddNewElectionStageRequest;
 use App\Http\Requests\ElectionCreateRequest;
+use App\Mappers\ElectionStageMapper;
 use App\Services\ElectionService;
 use App\Services\ElectionStageService;
 use Exception;
@@ -62,5 +64,27 @@ class ElectionController extends Controller
         }
 
         return response()->json($electionStages);
+    }
+
+    public function addStage(
+        AddNewElectionStageRequest $request,
+        int $electionId,
+        ElectionStageService $electionStageService
+    ): JsonResponse
+    {
+        try {
+            $stage = $electionStageService->addStageToElection(
+                electionId: $electionId,
+                newElectionStageDTO: $request->validateToDto()
+            );
+        }
+        catch (DBOperationException | EntityNotFoundException | FailedConstraintException $e) {
+            return ResponseFacade::errorResponse(exception: $e);
+        }
+        catch (Exception $e) {
+            return ResponseFacade::unhandledExceptionResponse(exception: $e);
+        }
+
+        return response()->json($stage);
     }
 }

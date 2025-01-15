@@ -22,8 +22,9 @@ class ElectionTypeMapper
         return new ElectionTypeDTO(
             name: $model->getAttribute('name'),
             countryId: $model->getAttribute('country_id'),
-            id: $model->getAttribute('id'),
+            requiredStagesCount: $model->getAttribute('required_stages_count'),
 //            Pitati da li ostaviti kao sad, da DTO vadi, ili ovde direktono iz model pozvati country
+            id: $model->getAttribute('id'),
             description: $model->getAttribute('description'),
         );
     }
@@ -49,6 +50,7 @@ class ElectionTypeMapper
             'name' => $dto->getName(),
             'description' => $dto->getDescription(),
             'country_id' => $dto->getCountryId(),
+            'required_stages_count' => $dto->getRequiredStagesCount(),
         ]);
     }
 
@@ -77,7 +79,8 @@ class ElectionTypeMapper
         if ($requestName === ElectionTypeCreateRequest::class) {
             $dto = new ElectionTypeDTO(
                 name: $data['name'],
-                countryId: $data['country_id']
+                countryId: $data['country_id'],
+                requiredStagesCount: $data['required_stages_count'],
             );
 
             if (isset($data['description'])) {
@@ -90,7 +93,8 @@ class ElectionTypeMapper
             $dto = new ElectionTypeDTO(
                 name: $data['name'],
                 countryId: $data['country_id'],
-                id: $data['id']
+                requiredStagesCount: $data['required_stages_count'],
+                id: $data['id'],
             );
 
             if (isset($data['description'])) {

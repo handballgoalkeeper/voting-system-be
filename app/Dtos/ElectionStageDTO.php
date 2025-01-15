@@ -10,82 +10,82 @@ use JsonSerializable;
 
 class ElectionStageDTO implements JsonSerializable
 {
-    private int $electionId;
-    private ElectionDTO $election;
+    private ?int $electionId = null;
+    private ?ElectionDTO $election = null;
 
     /**
      * @throws DBOperationException
      * @throws EntityNotFoundException
      */
     public function __construct(
-        int $electionId,
-        private bool $isFinal,
-        private ?float $census = null,
-        private ?float $coalitionCensus = null,
-        private ?float $stageInstantWinThreshold = null,
-        private ?Carbon $startsAt = null,
-        private ?Carbon $endsAt = null
+        private Carbon $startsAt,
+        private Carbon $endsAt,
+        private ?bool $isFinal = null,
+        ?int $electionId = null,
+        private ?int $census = null,
+        private ?int $coalitionCensus = null,
+        private ?int $stageInstantWinThreshold = null,
     )
     {
         $this->setElectionId($electionId);
     }
 
-    public function isFinal(): bool
+    public function isFinal(): ?bool
     {
         return $this->isFinal;
     }
 
-    public function setIsFinal(bool $isFinal): void
+    public function setIsFinal(?bool $isFinal): void
     {
         $this->isFinal = $isFinal;
     }
 
-    public function getCensus(): ?float
+    public function getCensus(): ?int
     {
         return $this->census;
     }
 
-    public function setCensus(?float $census): void
+    public function setCensus(?int $census): void
     {
         $this->census = $census;
     }
 
-    public function getCoalitionCensus(): ?float
+    public function getCoalitionCensus(): ?int
     {
         return $this->coalitionCensus;
     }
 
-    public function setCoalitionCensus(?float $coalitionCensus): void
+    public function setCoalitionCensus(?int $coalitionCensus): void
     {
         $this->coalitionCensus = $coalitionCensus;
     }
 
-    public function getStageInstantWinThreshold(): ?float
+    public function getStageInstantWinThreshold(): ?int
     {
         return $this->stageInstantWinThreshold;
     }
 
-    public function setStageInstantWinThreshold(?float $stageInstantWinThreshold): void
+    public function setStageInstantWinThreshold(?int $stageInstantWinThreshold): void
     {
         $this->stageInstantWinThreshold = $stageInstantWinThreshold;
     }
 
-    public function getStartsAt(): ?Carbon
+    public function getStartsAt(): Carbon
     {
         return $this->startsAt;
     }
 
-    public function setStartsAt(?Carbon $startsAt): void
+    public function setStartsAt(Carbon $startsAt): void
     {
         $this->startsAt = $startsAt;
     }
 
-    public function getEndsAt(): ?Carbon
+    public function getEndsAt(): Carbon
     {
         return $this->endsAt;
     }
 
-    public function setEndsAt(?Carbon $endsAt): void
+    public function setEndsAt(Carbon $endsAt): void
     {
         $this->endsAt = $endsAt;
     }
@@ -94,13 +94,15 @@ class ElectionStageDTO implements JsonSerializable
      * @throws DBOperationException
      * @throws EntityNotFoundException
      */
-    public function setElectionId(int $electionId): void
+    public function setElectionId(?int $electionId): void
     {
-        $this->electionId = $electionId;
-        $this->election = app(ElectionService::class)->findOneById($electionId);
+        if (!is_null($electionId)) {
+            $this->electionId = $electionId;
+            $this->election = app(ElectionService::class)->findOneById($electionId);
+        }
     }
 
-    public function getElectionId(): int
+    public function getElectionId(): ?int
     {
         return $this->electionId;
     }
