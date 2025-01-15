@@ -4,7 +4,9 @@ namespace App\Dtos;
 
 use App\Exceptions\DBOperationException;
 use App\Exceptions\EntityNotFoundException;
+use App\Exceptions\FailedConstraintException;
 use App\Services\CountryService;
+use App\Services\ElectionStageService;
 use App\Services\ElectionTypeService;
 use Carbon\Carbon;
 use JsonSerializable;
@@ -25,8 +27,7 @@ class ElectionDTO implements JsonSerializable
         int $electionTypeId,
         private bool $isPublished,
         private ?Carbon $published_at = null,
-        private ?int $id = null,
-        private ?array $stages = null,
+        private ?int $id = null
     )
     {
         $this->setCountryId($countryId);
@@ -116,22 +117,25 @@ class ElectionDTO implements JsonSerializable
 
     /**
      * @return array<ElectionStageDTO>|null
+     * @throws DBOperationException
+     * @throws FailedConstraintException
+     * @return array<ElectionStageDTO>|null
      */
-    public function getStages(): ?array
+    public function getStagesIfExists(): ?array
     {
-        return $this->stages;
+        try {
+            return app(ElectionStageService::class)->findAllByElectionId($this->id);
+        }
+        catch (EntityNotFoundException $e) {
+            return null;
+        }
     }
 
 
     /**
-     * @param array<ElectionStageDTO>|null $stages
-     * @return void
+     * @throws FailedConstraintException
+     * @throws DBOperationException
      */
-    public function setStages(?array $stages): void
-    {
-        $this->stages = $stages;
-    }
-
     public function jsonSerialize(): array
     {
         return [
@@ -145,6 +149,7 @@ class ElectionDTO implements JsonSerializable
                 'name' => $this->getElectionType()->getName(),
                 'description' => $this->getElectionType()->getDescription()
             ],
+            'starts_at' => ((!is_null($this->getStagesIfExists())) ? $this->getStagesIfExists()[0]->getStartsAt() : null),
             'is_published' => $this->isPublished(),
             'published_at' => $this->getPublishedAt(),
         ];
