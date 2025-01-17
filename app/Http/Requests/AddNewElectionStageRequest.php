@@ -19,8 +19,8 @@ class AddNewElectionStageRequest extends JSONRequest
             'census' => 'integer|nullable|min:0|max:100',
             'coalition_census' => 'integer|nullable|min:0|max:100',
             'stage_instant_win_threshold' => 'integer|nullable|min:0|max:100',
-            'starts_at' => 'required|date_format:Y-m-d\TH:i|after:today',
-            'ends_at' => 'required|date_format:Y-m-d\TH:i|after:starts_at'
+            'starts_at' => ['required', 'date_format:Y-m-d\TH:i', 'after:today'],
+            'ends_at' => ['required', 'date_format:Y-m-d\TH:i', 'after:starts_at'],
         ];
     }
 

@@ -8,6 +8,7 @@ use App\Exceptions\EntityNotFoundException;
 use App\Exceptions\FailedConstraintException;
 use App\Mappers\ElectionStageMapper;
 use App\Repositories\ElectionStageRepository;
+use App\Validators\ElectionStageTimetableValidator;
 
 readonly class ElectionStageService
 {
@@ -22,6 +23,7 @@ readonly class ElectionStageService
      * @throws DBOperationException
      * @throws EntityNotFoundException
      * @throws FailedConstraintException
+     * @return array<ElectionStageDTO>
      */
     public function findAllByElectionId(int $electionId): array
     {
@@ -45,22 +47,25 @@ readonly class ElectionStageService
      */
     public function addStageToElection(int $electionId, ElectionStageDTO $newElectionStageDTO): ElectionStageDTO
     {
-        $newElectionStageDTO->setElectionId($electionId);
-
-        if ($this->electionTypeService
+        $electionRequiredStageCount = $this->electionTypeService
             ->findOneById(
-                electionTypeId: $newElectionStageDTO
-                    ->getElection()
-                    ->getElectionType()
-                    ->getId()
+                electionTypeId: $electionId
             )
-            ->getRequiredStagesCount() === $this->electionStageRepository->findStagesCountByElectionId(
+            ->getRequiredStagesCount();
+
+        $electionCurrentStageCount = $this->electionStageRepository
+            ->findStagesCountByElectionId(
                 electionId: $electionId
-            )
-        ) {
+            );
+
+        if ($electionRequiredStageCount === $electionCurrentStageCount)
+        {
             throw new FailedConstraintException('Election stage maximum count reached for election you specified.');
         }
 
+        $newElectionStageDTO->setElectionId($electionId);
+
+        ElectionStageTimetableValidator::validateElectionStage(electionDTO: $newElectionStageDTO);
 
         if ($this->stageSlotsLeftByElectionId($electionId) === 1) {
             $newElectionStageDTO->setIsFinal(true);
@@ -81,5 +86,13 @@ readonly class ElectionStageService
         $currentStagesCount = $this->electionStageRepository->findStagesCountByElectionId($electionId);
 
         return  $election->getElectionType()->getRequiredStagesCount() - $currentStagesCount;
+    }
+
+    /**
+     * @throws DBOperationException
+     */
+    public function findStageCountByElectionId(int $electionId): int
+    {
+        return $this->electionStageRepository->findStagesCountByElectionId($electionId);
     }
 }
