@@ -8,6 +8,7 @@ use App\Exceptions\EntityNotFoundException;
 use App\Exceptions\FailedConstraintException;
 use App\Facade\ResponseFacade;
 use App\Mappers\ElectionMapper;
+use App\Models\ElectionModel;
 use App\Repositories\ElectionRepository;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,7 @@ use Illuminate\Http\JsonResponse;
 readonly class ElectionService
 {
     public function __construct(
-        private readonly ElectionRepository $electionRepository
+        private ElectionRepository $electionRepository
     )
     {
     }
@@ -71,4 +72,28 @@ readonly class ElectionService
 
         return true;
     }
+
+    /**
+     * @throws DBOperationException
+     * @throws EntityNotFoundException
+     * @throws FailedConstraintException
+     */
+    public function publishByElectionId(int $electionId): ElectionDTO
+    {
+        $election = $this->electionRepository->findOneById($electionId);
+
+        if ($election->getAttribute('is_published')) {
+            throw new FailedConstraintException('Election is already published.');
+        }
+
+        $election->setAttribute('is_published', true);
+
+        if ($election->isDirty())
+        {
+            $election = $this->electionRepository->save($election);
+        }
+
+        return ElectionMapper::modelToDto($election);
+    }
+
 }

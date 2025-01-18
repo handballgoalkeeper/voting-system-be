@@ -44,7 +44,11 @@ Route::prefix(API_VERSION)
             ->group(function () {
                 Route::get('/', 'findAll')->name('find_all');
                 Route::post('/', 'create')->name('create');
-
+                Route::patch('/{electionId}/publish', 'publish')
+                    ->middleware([
+                        'ValidateParameter:electionId,[1-9][0-9]*',
+                    ])
+                    ->name('publish');
                 Route::prefix('/{electionId}/stages')
                     ->name('elections.')
                     ->middleware([

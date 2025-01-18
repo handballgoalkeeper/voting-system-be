@@ -50,4 +50,19 @@ class ElectionRepository
 
         return $election;
     }
+
+    /**
+     * @throws DBOperationException
+     */
+    public function save(ElectionModel $model): ElectionModel
+    {
+        try {
+            $model->save();
+        }
+        catch (Exception $e) {
+            throw new DBOperationException('Something went wrong while trying to save election.');
+        }
+
+        return $model;
+    }
 }
