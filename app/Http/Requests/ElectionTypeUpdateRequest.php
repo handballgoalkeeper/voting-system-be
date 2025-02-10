@@ -20,6 +20,7 @@ class ElectionTypeUpdateRequest extends JSONRequest
             'id' => 'required|integer|exists:election_types,id',
             'name' => 'required|string|max:255',
             'description' => 'string|max:255',
+            'required_stages_count' => 'required|integer|min:1',
             'country_id' => 'required|integer|exists:countries,id'
         ];
     }

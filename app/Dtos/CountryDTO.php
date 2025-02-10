@@ -49,7 +49,7 @@ class CountryDTO implements JsonSerializable
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'totalVoters' => $this->totalVoters,
+            'total_voters' => $this->totalVoters,
         ];
     }
 }
